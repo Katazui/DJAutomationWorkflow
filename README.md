@@ -1,6 +1,10 @@
 # DJAutomationWorkflow
 Tools to organize your DJ workflow 
 
+### Table of Contents
+- [DJ Pool File Organizer](#dj-pool-file-organizer)
+   
+
 # DJ Pool File Organizer
 
 This Python script is designed to help DJs organize their music files efficiently. It automatically sorts music files from specified source folders into a structured directory based on the date. Additionally, it offers the option to create new date-based folders or insert files into the latest existing folder. 
@@ -9,7 +13,7 @@ This Python script is designed to help DJs organize their music files efficientl
 
 Before running this script, ensure that you have the following:
 - Python installed on your system.
-- The music files you want to organize should be in a supported format (e.g., `.mp3`).
+- The music files you want to organize should be in a supported format (e.g., `.mp3`, `.m4a`, `.wav`, etc...).
 - Appropriate read and write permissions to the involved directories.
 
 ## Setup
