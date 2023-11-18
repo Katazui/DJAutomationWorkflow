@@ -37,7 +37,7 @@ Before running this script, ensure that you have the following:
 
 ## Code Explanation
 
-[Check out the code](/organizeSongsToPool.py)
+[Check out the code](/organizeSongsToDJPool.py)
 
 ```python
 import os
