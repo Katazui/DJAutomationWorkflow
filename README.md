@@ -3,6 +3,7 @@ Tools to organize your DJ workflow
 
 ### Table of Contents
 - [DJ Pool File Organizer](#dj-pool-file-organizer)
+- [DJ Pool File Organizer](#create-automated-playlists)
    
 
 # DJ Pool File Organizer
@@ -35,29 +36,35 @@ Before running this script, ensure that you have the following:
 - **User Input**: Prompts the user to either create a new folder or use the latest folder.
 - **Subfolder for Converted Files**: Inside the target folder, a subfolder named `converted` is created, where `.mp3` files from the Downloads folder are specifically moved.
 
-## Code Explanation
-
 [Check out the code](/organizeSongsToDJPool.py)
 
-```python
-import os
-import shutil
-from datetime import datetime, timedelta
+# Create Automated Playlists
 
-# Paths for DJ Pool directory, source folders, and Downloads folder
-dj_pool_base_path = "/path/to/DJPool"
-source_folders = ["path/to/source1", "path/to/source2"]
-downloads_folder = "/path/to/Downloads"
+This Python script is designed for DJs to organize a large collection of music files. It automatically sorts music files from a DJ pool folder into playlists based on their genre and certain keywords in the file titles.
 
-# Function to move files to a specified folder
-def move_files_to_folder(target_folder):
-    # [Code to move files from source folders and Downloads folder]
+## Prerequisites
 
-# User input for folder choice and logic for folder creation and file moving
-user_choice = input("Do you want to create a new folder? (yes/no): ")
-if user_choice == 'yes':
-    # [Code to handle new folder creation and file moving]
-elif user_choice == 'no':
-    # [Code to find the latest folder and move files there]
-else:
-    print("Invalid input. Exiting.")
+Before running this script, you should have:
+
+- Python installed on your system.
+- The `mutagen` library installed. You can install it using pip: `pip install mutagen`.
+- The music files you wish to organize, preferably in `.mp3` format.
+
+## Setup
+
+1. **Configure the Script**:
+   - Set `dj_pool_path` to the path where your music files are stored.
+   - Update the `genres` list to include the genres you're interested in.
+   - Modify `title_keywords` with keywords that often appear in your file titles.
+
+2. **Run the Script**:
+   - Execute the script in a Python environment.
+   - The script will process all `.mp3` files in the specified directory, organizing them into playlists based on genre and title keywords.
+
+## Script Functionality
+
+- **File Categorization**: The script categorizes music files based on genre information from their metadata and keywords in their titles.
+- **Playlist Creation**: It creates `.m3u` playlist files for each genre and keyword.
+- **Directory Structure**: Playlists are stored in separate "Genres" and "Keywords" folders within an "AutomatedPlaylists" folder in your DJ Pool path.
+
+[Check out the code](/createPlaylist.py)
