@@ -9,8 +9,6 @@ Tools to organize your DJ workflow
 
 This Python script is designed to help DJs organize their music files efficiently. It automatically sorts music files from specified source folders into a structured directory based on the date. Additionally, it offers the option to create new date-based folders or insert files into the latest existing folder. 
 
-[Check out the script](/organization/organizeDJDownloadsToLocalPool.py)
-
 ## Prerequisites
 
 Before running this script, ensure that you have the following:
@@ -38,6 +36,8 @@ Before running this script, ensure that you have the following:
 - **Subfolder for Converted Files**: Inside the target folder, a subfolder named `converted` is created, where `.mp3` files from the Downloads folder are specifically moved.
 
 ## Code Explanation
+
+[Check out the code](/organization/organizeDJDownloadsToLocalPool.py)
 
 ```python
 import os
