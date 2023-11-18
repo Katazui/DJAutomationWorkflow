@@ -59,7 +59,7 @@ Before running this script, you should have:
 
 2. **Run the Script**:
    - Execute the script in a Python environment.
-   - The script will process all `.mp3` files in the specified directory, organizing them into playlists based on genre and title keywords.
+   - The script will process all `.mp3` (and most audio format) files in the specified directory, organizing them into playlists based on genre and title keywords.
 
 ### Script Functionality
 
