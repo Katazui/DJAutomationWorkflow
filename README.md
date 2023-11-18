@@ -37,7 +37,7 @@ Before running this script, ensure that you have the following:
 
 ## Code Explanation
 
-[Check out the code](/organization/organizeDJDownloadsToLocalPool.py)
+[Check out the code](/organizeSongsToPool.py)
 
 ```python
 import os
