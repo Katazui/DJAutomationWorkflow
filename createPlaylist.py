@@ -58,7 +58,7 @@ os.makedirs(keywords_path, exist_ok=True)
 # Walk through the folder and add files to the respective lists
 for root, dirs, files in os.walk(dj_pool_path):
     for file in files:
-        if file.endswith('.mp3'):
+        if file.endswith('.mp3') or file.endswith('.MP3') or file.endswith('.m4a') or file.endswith('.M4A') or file.endswith('.wav') or file.endswith('.WAV') or file.endswith('.aiff') or file.endswith('.AIFF') or file.endswith('.aac') or file.endswith('.AAC') or file.endswith('.flac') or file.endswith('.FLAC'):
             file_path = os.path.join(root, file)
             genre = get_genre(file_path)
             genre_files[genre].append(file_path)
