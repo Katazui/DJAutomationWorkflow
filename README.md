@@ -31,7 +31,7 @@ Before running this script, ensure that you have the following:
 
 ### Script Functionality
 
-[Check out the code](/organizeSongsToDJPool.py)
+[Check out the code](/organizeDJPool.py)
 
 - **File Moving**: Moves files from specified source folders to a target folder organized by date.
 - **Folder Creation**: Automatically creates new folders based on the current date, or finds and uses the latest existing folder.
