@@ -3,13 +3,13 @@ import shutil
 from datetime import datetime, timedelta
 
 # Base path of your DJ Pool directory
-dj_pool_base_path = "/Users/haleakala/Music/Local DJ Pool/DJ Pool"
+dj_pool_base_path = "/Users/Music/Local DJ Pool/DJ Pool"
 
 # Folders to check for files
 source_folders = [
-    "/Users/haleakala/Music/Local DJ Pool/Output_DJCity",
-    "/Users/haleakala/Music/Local DJ Pool/Output_ExportMP3",
-    "/Users/haleakala/Music/Local DJ Pool/Output_Platinum_Notes"
+    "/Users/Music/Local DJ Pool/Output_DJCity",
+    "/Users/Music/Local DJ Pool/Output_ExportMP3",
+    "/Users/Music/Local DJ Pool/Output_Platinum_Notes"
 ]
 
 # Path to the Downloads folder
