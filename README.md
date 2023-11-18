@@ -3,7 +3,7 @@ Tools to organize your DJ workflow
 
 ### Table of Contents
 - [DJ Pool File Organizer](#dj-pool-file-organizer)
-- [DJ Pool File Organizer](#create-automated-playlists)
+- [Create Automated Playlist](#create-automated-playlists)
    
 
 # DJ Pool File Organizer
