@@ -1,9 +1,10 @@
 import os
 import mutagen
+import concurrent.futures
 from mutagen.easyid3 import EasyID3
 
 # Define the path to your DJ Pool folder
-dj_pool_path = "/path/to/pool"
+dj_pool_path = "/Users/Music/Local DJ Pool/DJ Pool/"
 
 # Define the genres you are interested in
 genres = [
@@ -11,25 +12,39 @@ genres = [
     "Reggaeton", "Dance", "Electronic", "House", "EDM", "Trap", "Dubstep", 
     "Moombahton", "Twerk", "Rock", "Alternative", "Indie", "Funk", "Soul", 
     "Jazz", "Blues", "Oldies", "Disco", "Folk", "Classical", "Instrumental", 
-    "Soundtrack", "Kids", "Christian", "Gospel", "Holiday", "Other", "Acapella", 
-    "Clean", "Dirty", "Intro", "Quick Hit", "Short Edit", "Extended", "Remix", 
-    "Mashup", "Bootleg", "Redrum", "Transition", "Drum & Bass", "Techno", 
+    "Soundtrack", "Kids", "Christian", "Gospel", "Holiday", "Other",
+    "Mashup", "Bootleg", "Drum & Bass", "Techno", 
     "Trance", "Afrobeat", "Bachata", "Salsa", "Reggae", "Dancehall", 
     "Deep House", "Tech House", "Progressive House", "Tropical House", 
     "Future Bass", "Glitch Hop", "Nu Disco", "Halloween", 
     "Ambient", "Hardstyle", "Psytrance", "Breakbeat", "UK Garage", "Grime", 
     "Future House", "Bass House", "Electro House", "Jersey Club", "Baltimore Club", 
     "Vocal House", "Latin Pop", "K-Pop", "J-Pop", "Cumbia", "Soca", "African", 
-    "Bhangra", "Acapella Out", "Acapella In", "Segue", "Segue Mix", 
-    "Drum Edit", "Bass Edit", "Instrumental", "Re-Drum", "Ampiano"
+    "Bhangra", "Segue", "Segue Mix", "Instrumental", "Re-Drum", "Ampiano"
 ]
 
-title_keywords = ["Intro", "Dirty", "Clean", "Transition", "Slam", "Edit", "Remix", "Acap", "Quick", "Quickie", "Short", "Explict", "Instrumental"]
+title_keywords = ["Transition", "Slam", "Edit", "Remix", "Instrumental", "Extended", "Redrum"]
 
-# Create dictionaries to hold filenames for each genre and title keyword
+grouped_playlists = {
+    "Dirty": ["Dirty", "Explicit"],
+    "Clean": ["Clean", "Radio"],
+    "Quick Hits": ["Quick", "Quickie", "Short"],
+    "Acappella": ["Acap", "Acapella", "Acapella In", "Acapella Out" ,"Acap In", "Acap Out"],
+    "Intro": ["Intro", "Break Intro"]
+}
+
+# Create dictionaries to hold filenames for each genre, title keyword, and grouped playlists
 genre_files = {genre: [] for genre in genres}
 genre_files['NoGenre'] = []
 keyword_files = {keyword: [] for keyword in title_keywords}
+grouped_files = {group: [] for group in grouped_playlists}
+
+# Function to process each file (both genre and keywords)
+def process_file(file_path):
+    genre = get_genre(file_path)
+    genre_files[genre].append(file_path)
+    
+    categorize_by_title(file_path)
 
 # Function to get the genre from the file's metadata
 def get_genre(file_path):
@@ -42,11 +57,20 @@ def get_genre(file_path):
 
 # Function to categorize files based on title keywords
 def categorize_by_title(file_path):
-    filename = os.path.basename(file_path)
-    for keyword in title_keywords:
-        if keyword.lower() in filename.lower():
-            keyword_files[keyword].append(file_path)
+    filename = os.path.basename(file_path).lower()
+    categorized = False
+
+    for group, keywords in grouped_playlists.items():
+        if any(keyword.lower() in filename for keyword in keywords):
+            grouped_files[group].append(file_path)
+            categorized = True
             break
+
+    if not categorized:
+        for keyword in title_keywords:
+            if keyword.lower() in filename:
+                keyword_files[keyword].append(file_path)
+                break
 
 # Create directories for playlists
 playlists_path = os.path.join(dj_pool_path, "AutomatedPlaylists")
@@ -55,14 +79,26 @@ keywords_path = os.path.join(playlists_path, "Keywords")
 os.makedirs(genres_path, exist_ok=True)
 os.makedirs(keywords_path, exist_ok=True)        
 
-# Walk through the folder and add files to the respective lists
-for root, dirs, files in os.walk(dj_pool_path):
-    for file in files:
-        if file.endswith('.mp3') or file.endswith('.MP3'):
-            file_path = os.path.join(root, file)
-            genre = get_genre(file_path)
-            genre_files[genre].append(file_path)
-            categorize_by_title(file_path)
+# # Walk through the folder and add files to the respective lists
+# for root, dirs, files in os.walk(dj_pool_path):
+#     for file in files:
+#         if file.endswith('.mp3') or file.endswith('.MP3'):
+#             file_path = os.path.join(root, file)
+#             genre = get_genre(file_path)
+#             genre_files[genre].append(file_path)
+#             categorize_by_title(file_path)
+
+# Using ThreadPoolExecutor to process files concurrently
+with concurrent.futures.ThreadPoolExecutor() as executor:
+    futures = []
+    for root, _, files in os.walk(dj_pool_path):
+        for file in files:
+            if file.lower().endswith('.mp3'):
+                file_path = os.path.join(root, file)
+                futures.append(executor.submit(process_file, file_path))
+
+    # Wait for all futures to complete
+    concurrent.futures.wait(futures)
 
 # Write the .m3u files for genres in Genres folder
 for genre, files in genre_files.items():
@@ -81,3 +117,12 @@ for keyword, files in keyword_files.items():
             for file in files:
                 playlist.write(f"{file}\n")
             print(f"Keyword playlist created: {playlist_path}")
+
+# Write the .m3u files for grouped playlists in Keywords folder
+for group, files in grouped_files.items():
+    if files:
+        playlist_path = os.path.join(keywords_path, f"{group}.m3u")
+        with open(playlist_path, 'w') as playlist:
+            for file in files:
+                playlist.write(f"{file}\n")
+            print(f"Grouped playlist created: {playlist_path}")            
