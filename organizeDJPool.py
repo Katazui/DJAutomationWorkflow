@@ -13,7 +13,7 @@ source_folders = [
 ]
 
 # Path to the Downloads folder
-downloads_folder = "/Users/haleakala/Downloads"
+downloads_folder = "/Users/Downloads"
 
 # Function to move files to the specified folder
 def move_files_to_folder(target_folder):
