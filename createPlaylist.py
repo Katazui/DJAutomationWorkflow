@@ -9,18 +9,18 @@ dj_pool_path = "/Users/Music/Local DJ Pool/DJ Pool/"
 # Define the genres you are interested in
 genres = [
     "Rap", "R&B", "Top 40", "Pop", "Country", "Hip Hop", "Christmas", "Latin", 
-    "Reggaeton", "Dance", "Electronic", "House", "EDM", "Trap", "Dubstep", 
-    "Moombahton", "Twerk", "Rock", "Alternative", "Indie", "Funk", "Soul", 
-    "Jazz", "Blues", "Oldies", "Disco", "Folk", "Classical", "Instrumental", 
-    "Soundtrack", "Kids", "Christian", "Gospel", "Holiday", "Other",
-    "Mashup", "Bootleg", "Drum & Bass", "Techno", 
-    "Trance", "Afrobeat", "Bachata", "Salsa", "Reggae", "Dancehall", 
-    "Deep House", "Tech House", "Progressive House", "Tropical House", 
-    "Future Bass", "Glitch Hop", "Nu Disco", "Halloween", 
-    "Ambient", "Hardstyle", "Psytrance", "Breakbeat", "UK Garage", "Grime", 
-    "Future House", "Bass House", "Electro House", "Jersey Club", "Baltimore Club", 
-    "Vocal House", "Latin Pop", "K-Pop", "J-Pop", "Cumbia", "Soca", "African", 
-    "Bhangra", "Segue", "Segue Mix", "Instrumental", "Re-Drum", "Ampiano"
+    "Reggaeton", "Dance", "Electronic", "House", "EDM", "Trap", "Dubstep", "Electronica",
+    "Moombahton", "Twerk", "Rock", "Alternative", "Indie", "Funk", "Soul", "Hardcore",
+    "Jazz", "Blues", "Oldies", "Disco", "Folk", "Classical", "Instrumental", "Wedding",
+    "Soundtrack", "Kids", "Christian", "Gospel", "Holiday", "Other", "#MIX", "New Year's Eve",
+    "Mashup", "Bootleg", "Drum & Bass", "Techno", "#50KSET", "#BLEND",
+    "Trance", "Afrobeats", "Bachata", "Salsa", "Reggae", "Dancehall", "#OUTRO", "Drill",
+    "Deep House", "Tech House", "Progressive House", "Tropical House", "#CLEAN", "Loops",
+    "Future Bass", "Glitch Hop", "Nu Disco", "Halloween", "#EDIT", "#INTRO", "#DROP", "Traditional",
+    "Ambient", "Hardstyle", "Psytrance", "Breakbeat", "UK Garage", "Grime", "Drum Loops",
+    "Future House", "Bass House", "Electro House", "Jersey Club", "Baltimore Club", "Tools",
+    "Vocal House", "Latin Pop", "K-Pop", "J-Pop", "Cumbia", "Soca", "African", "Sample",
+    "Bhangra", "Segue", "Segue Mix", "Instrumental", "Re-Drum", "Ampiano", "Dembow"
 ]
 
 title_keywords = ["Transition", "Slam", "Edit", "Remix", "Instrumental", "Extended", "Redrum"]
@@ -30,7 +30,8 @@ grouped_playlists = {
     "Clean": ["Clean", "Radio"],
     "Quick Hits": ["Quick", "Quickie", "Short"],
     "Acappella": ["Acap", "Acapella", "Acapella In", "Acapella Out" ,"Acap In", "Acap Out"],
-    "Intro": ["Intro", "Break Intro"]
+    "Intro": ["Intro", "Break Intro"],
+    "Tools": ["Loops"]
 }
 
 # Create dictionaries to hold filenames for each genre, title keyword, and grouped playlists
@@ -41,19 +42,26 @@ grouped_files = {group: [] for group in grouped_playlists}
 
 # Function to process each file (both genre and keywords)
 def process_file(file_path):
-    genre = get_genre(file_path)
-    genre_files[genre].append(file_path)
+    genre_list = get_genre(file_path)
+    for genre in genre_list:
+        genre_files[genre].append(file_path)
     
     categorize_by_title(file_path)
+
 
 # Function to get the genre from the file's metadata
 def get_genre(file_path):
     try:
         audio = EasyID3(file_path)
-        return audio['genre'][0] if 'genre' in audio and audio['genre'][0] in genres else 'NoGenre'
+        if 'genre' in audio:
+            genre_list = [genre.strip() for genre in audio['genre'][0].split(',')]
+            return [genre for genre in genre_list if genre in genres]
+        else:
+            return ['NoGenre']
     except Exception as e:
         print(f"Error reading {file_path}: {e}")
-        return 'NoGenre'
+        return ['NoGenre']
+
 
 # Function to categorize files based on title keywords
 def categorize_by_title(file_path):
